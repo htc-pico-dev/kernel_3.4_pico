@@ -2664,7 +2664,7 @@ static void pico_reset(void)
  * writel(j & ~(1 << (PICO_GPIO_PS_HOLD - 16)), MSM_GPIO_OUT_1);
  *
  */
-inline void pico_reset(void) {
+void pico_reset(void) {
 	uint32_t *p;
 
 	p = (uint32_t *)MSM_GPIO_OUT_1_PHYS;
@@ -2672,7 +2672,7 @@ inline void pico_reset(void) {
 	*p = *p & ~(1 << (PICO_GPIO_PS_HOLD - 16));
 }
 
-inline void pico_reset_mmu(void) {
+void pico_reset_mmu(void) {
 	uint32_t j;
 
 	j = readl(MSM_GPIO_OUT_1);

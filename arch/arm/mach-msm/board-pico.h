@@ -21,8 +21,8 @@ int __init pico_init_keypad(void);
 int pico_init_mmc(unsigned int sys_rev);
 int __init pico_wifi_init(void);
 
-inline void pico_reset(void);
-inline void pico_reset_mmu(void);
+void pico_reset(void);
+void pico_reset_mmu(void);
 
 #define MSM_MEM_BASE		0x10000000
 #define MSM_MEM_SIZE		0x20000000
