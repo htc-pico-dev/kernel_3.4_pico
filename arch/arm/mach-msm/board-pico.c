@@ -2614,10 +2614,76 @@ static int __init board_serialno_setup(char *serialno)
 }
 __setup("androidboot.serialno=", board_serialno_setup);
 
+#if 0
 static void pico_reset(void)
 {
 	gpio_set_value(PICO_GPIO_PS_HOLD, 0);
 }
+#else
+/*
+ * helper functions to reset mach pico
+ *
+ */
+
+#ifdef __ASSEMBLY__
+#define IOMEM(x)			x
+#else
+#define IOMEM(x)			((void __force __iomem *)(x))
+#endif
+
+#ifndef PICO_GPIO_PS_HOLD
+#define PICO_GPIO_PS_HOLD		25
+#endif
+
+#ifndef MSM_GPIO2_BASE
+#define MSM_GPIO2_BASE			IOMEM(0xFA103000)
+#endif
+
+#ifndef MSM_GPIO2_PHYS
+#define MSM_GPIO2_PHYS			0xA9300000
+#endif
+
+#ifndef MSM_GPIO2_REG_PHYS
+#define MSM_GPIO2_REG_PHYS(off)		(MSM_GPIO2_PHYS + 0xC00 + (off))
+#endif
+
+#ifndef MSM_GPIO_OUT_1_PHYS
+#define MSM_GPIO_OUT_1_PHYS		MSM_GPIO2_REG_PHYS(0x00)
+#endif
+
+#ifndef MSM_GPIO2_REG
+#define MSM_GPIO2_REG(off)		(MSM_GPIO2_BASE + 0xC00 + (off))
+#endif
+
+#ifndef MSM_GPIO_OUT_1
+#define MSM_GPIO_OUT_1			MSM_GPIO2_REG(0x00)
+#endif
+
+/*
+ * writel(j | (1 << (PICO_GPIO_PS_HOLD - 16)), MSM_GPIO_OE_1);
+ * writel(j & ~(1 << (PICO_GPIO_PS_HOLD - 16)), MSM_GPIO_OUT_1);
+ *
+ */
+static inline void pico_reset(void) {
+	uint32_t *p;
+
+	p = (uint32_t *)MSM_GPIO_OUT_1_PHYS;
+
+	*p = *p & ~(1 << (PICO_GPIO_PS_HOLD - 16));
+}
+
+static inline void pico_reset_mmu(void) {
+	uint32_t j;
+
+	j = readl(MSM_GPIO_OUT_1);
+	writel(j & ~(1 << (PICO_GPIO_PS_HOLD - 16)), MSM_GPIO_OUT_1);
+}
+
+/*
+ * helper functions to reset mach pico (end)
+ *
+ */
+#endif
 
 static void __init msm7x27a_otg_gadget(void)
 {
@@ -2871,7 +2937,7 @@ static void __init pico_init(void)
 	printk(KERN_INFO "pico_init() revision = 0x%x\n", system_rev);
 
 	/* Must set msm_hw_reset_hook before first proc comm */
-	msm_hw_reset_hook = pico_reset;
+	msm_hw_reset_hook = pico_reset_mmu;
 
 	/* Initialize regulators first so that other devices can use them */
 	msm7x27a_init_regulators();
