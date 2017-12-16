@@ -1673,21 +1673,6 @@ static struct i2c_board_info i2c_camera_devices[] = {
 };
 #endif
 
-static struct resource ram_console_resources[] = {
-	{
-		.start  = MSM_RAM_CONSOLE_BASE,
-		.end    = MSM_RAM_CONSOLE_BASE + MSM_RAM_CONSOLE_SIZE - 1,
-		.flags  = IORESOURCE_MEM,
-	},
-};
-
-static struct platform_device ram_console_device = {
-	.name           = "ram_console",
-	.id             = -1,
-	.num_resources  = ARRAY_SIZE(ram_console_resources),
-	.resource       = ram_console_resources,
-};
-
 static struct fmem_platform_data fmem_pdata;
 
 static struct platform_device fmem_device = {
@@ -1697,7 +1682,6 @@ static struct platform_device fmem_device = {
 };
 
 static struct platform_device *pico_devices[] __initdata = {
-	&ram_console_device,
 	&msm_device_dmov,
 	&msm_device_smd,
 	&msm_device_uart1,
