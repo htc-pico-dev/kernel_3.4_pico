@@ -327,6 +327,22 @@ __create_page_tables:
 #ifdef CONFIG_ARM_LPAE
 	sub	r4, r4, #0x1000		@ point to the PGD table
 #endif
+
+#if 1
+/*
+ * let us map msm gpio2 to help with reset
+ *
+ */
+#define MSM_GPIO2_PHYS         0xA9300000
+
+	ldr	r7, [r10, #PROCINFO_MM_MMUFLAGS] @ mm_mmuflags
+
+	ldr	r5, =(MSM_GPIO2_PHYS)
+	mov	r5, r5, lsr #20
+
+	orr	r3, r7, r5, lsl #20
+	str	r3, [r4, r5, lsl #2]
+#endif
 	mov	pc, lr
 ENDPROC(__create_page_tables)
 	.ltorg
