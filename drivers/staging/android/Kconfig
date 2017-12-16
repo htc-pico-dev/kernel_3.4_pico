@@ -38,6 +38,21 @@ config ANDROID_RAM_CONSOLE
 	select ANDROID_PERSISTENT_RAM
 	default n
 
+config ANDROID_RAM_CONSOLE_EARLY_INIT
+	bool "Start Android RAM console early"
+	default n
+	depends on ANDROID_RAM_CONSOLE
+
+config ANDROID_RAM_CONSOLE_EARLY_ADDR
+	hex "Android RAM console virtual address"
+	default 0
+	depends on ANDROID_RAM_CONSOLE_EARLY_INIT
+
+config ANDROID_RAM_CONSOLE_EARLY_SIZE
+	hex "Android RAM console buffer size"
+	default 0
+	depends on ANDROID_RAM_CONSOLE_EARLY_INIT
+
 config PERSISTENT_TRACER
 	bool "Persistent function tracer"
 	depends on HAVE_FUNCTION_TRACER
