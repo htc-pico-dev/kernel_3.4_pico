@@ -41,7 +41,7 @@
 #define MSM_DEVICE(name) MSM_CHIP_DEVICE(name, MSM)
 
 
-unsigned int msm_shared_ram_phys = 0x00200000;
+unsigned int msm_shared_ram_phys = 0x00100000;
 
 static void __init msm_map_io(struct map_desc *io_desc, int size)
 {

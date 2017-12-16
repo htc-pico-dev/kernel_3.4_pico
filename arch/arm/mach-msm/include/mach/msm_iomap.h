@@ -25,14 +25,6 @@
 
 #include <asm/sizes.h>
 
-#if 0
-#ifdef __ASSEMBLY__
-#define IOMEM(x)	x
-#else
-#define IOMEM(x)	((void __force __iomem *)(x))
-#endif
-#endif
-
 #define MSM_DEBUG_UART_SIZE	SZ_4K
 
 #if defined(CONFIG_DEBUG_MSM_UART1) || defined(CONFIG_DEBUG_MSM_UART2) \
