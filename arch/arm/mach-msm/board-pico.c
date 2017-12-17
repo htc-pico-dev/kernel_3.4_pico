@@ -2659,6 +2659,9 @@ void pico_reset(void) {
 void pico_reset_mmu(void) {
 	uint32_t j;
 
+	/* wait for log dump */
+	msleep(1000);
+
 	j = readl(MSM_GPIO_OUT_1);
 	writel(j & ~(1 << (PICO_GPIO_PS_HOLD - 16)), MSM_GPIO_OUT_1);
 }
