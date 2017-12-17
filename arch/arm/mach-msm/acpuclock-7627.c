@@ -893,6 +893,7 @@ static void __devinit select_freq_plan(void)
 		if (pll_clk[i].name) {
 			pll_clk[i].clk = clk_get_sys("acpu", pll_clk[i].name);
 			if (IS_ERR(pll_clk[i].clk)) {
+				pll_clk[i].clk = 0;
 				pll_mhz[i] = 0;
 				continue;
 			}
@@ -910,9 +911,7 @@ static void __devinit select_freq_plan(void)
 				pll0_960_pll1_737_pll2_1200_25a;
 		}
 		t->tbl = acpu_freq_tbl;
-	}
-
-	if (cpu_is_msm8625() &&	pll_mhz[ACPU_PLL_4] == 1008) {
+	} else if (cpu_is_msm8625() &&	pll_mhz[ACPU_PLL_4] == 1008) {
 		if (pll_mhz[ACPU_PLL_1] == 245)
 			acpu_freq_tbl =
 				pll0_960_pll1_245_pll2_1200_pll4_1008_2p0;
