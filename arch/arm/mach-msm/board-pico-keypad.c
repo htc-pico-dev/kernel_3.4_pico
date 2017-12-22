@@ -19,6 +19,7 @@
 #include <linux/gpio.h>
 #include <linux/keyreset.h>
 #include <asm/mach-types.h>
+#include <asm/system_info.h>
 
 #include <mach/board_htc.h>
 
@@ -135,13 +136,13 @@ int __init pico_init_keypad(void)
 {
 	if (platform_device_register(&pico_reset_keys_device))
 		printk(KERN_WARNING "%s: register reset key fail\n", __func__);
-#if 0
+
 	if (system_rev >= 1) {
 		pico_keypad_power_info.keymap = pico_keypad_nav_map_xb;
 		pico_keypad_power_info.keymap_size =
 				ARRAY_SIZE(pico_keypad_nav_map_xb);
 	}
-#endif
+
 	return platform_device_register(&pico_keypad_device);
 }
 
