@@ -2962,7 +2962,7 @@ static void __init pico_init(void)
 		printk(KERN_CRIT "%s: MMC init failure (%d)\n", __func__, rc);
 
 	msm7x27a_pm_init();
-	printk(KERN_INFO "%s: msm7x27a_pm_init\n", __func__);
+	//printk(KERN_INFO "%s: msm7x27a_pm_init\n", __func__);
 	pico_init_panel();
 #if defined(CONFIG_I2C) && defined(CONFIG_GPIO_SX150X)
 	register_i2c_devices();
